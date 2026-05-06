@@ -9,7 +9,7 @@ A stage answers what belongs at its own level and intentionally leaves the next 
 | Stage      | Answers (destination)                        | Leaves blank (path)                              |
 | ---------- | -------------------------------------------- | ------------------------------------------------ |
 | Foundation | Why, what, initial tooling                   | How to slice the work                            |
-| Decompose  | Slice list, priorities                       | How to implement each slice                      |
+| Decompose  | Slices currently visible, with priorities | How to implement each slice |
 | Select     | Completion criteria of the chosen slice      | The implementation procedure for that slice      |
 
 The same shape repeats at each level. This is the answer to the depth-2 reproduction of the failure mode (see [01-problem.md](01-problem.md)) — even fine slicing is not enough; each level must apply the same discipline.
@@ -31,7 +31,7 @@ This is the enforcement mechanism for Principle 1. Without it, an LLM will draw 
 Each stage is a thin restatement of the same shape:
 
 - **Foundation:** ask only about destination (why, what, with what). Defer any path question to Decompose. Mark any unanswered destination value as `TBD`.
-- **Decompose:** ask only about slicing (what slices, in what order). Defer any in-slice implementation question to Select or downstream. Mark any unanswered slicing value as `TBD`.
+- **Decompose:** ask only about slicing — what slice(s) are currently visible and in what order. Decompose runs incrementally: each call derives or updates the slice(s) visible right now, not a full N-list. Defer any in-slice implementation question to Select or downstream. Mark any unanswered slicing value as `TBD`.
 - **Select:** ask only about the chosen slice's completion criteria. Defer any in-slice implementation procedure to downstream. Mark any unanswered criterion as `TBD`.
 
 The pattern is the same; only what counts as destination at this level changes.

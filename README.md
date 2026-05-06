@@ -14,13 +14,11 @@ A structured, AI-assisted workflow for taking any project from idea to completio
   └───────────┬───────────┘                │
               ▼                            │
   ┌───────────────────────┐                │
-  │       Decompose       │                │
-  │ Break into work units │                │
-  └───────────┬───────────┘                │
-              ▼                            │
-  ┌───────────────────────┐                │
-  │    Select a Slice     │ ◄────────┐     │
-  │   (Iteration goal)    │          │     │
+  │       Decompose       │ ◄────────┐     │
+  └───────────┬───────────┘          │     │
+              ▼                      │     │
+  ┌───────────────────────┐          │     │
+  │    Select a Slice     │          │     │
   └───────────┬───────────┘          │     │
               ▼                      │     │
       ┌───────────────┐              │     │
@@ -53,17 +51,15 @@ A structured, AI-assisted workflow for taking any project from idea to completio
 ## Step 1. Foundation Document
 
 ```
-                    ┌───────────────────────┐
-                    │  Foundation Document  │
-                    └───────────┬───────────┘
-            ┌───────────────────┼───────────────────┐
-            ▼                   ▼                   ▼
-  ┌───────────────────┐ ┌─────────────────┐ ┌──────────────────┐
-  │ 1. Core Problem   │ │ 2. Vision /     │ │ 3. Tech Stack    │
-  │    & End Goal     │ │    Target Users │ │    (Initial)     │
-  │                   │ │    Success /    │ │                  │
-  │                   │ │    Core Values  │ │                  │
-  └───────────────────┘ └─────────────────┘ └──────────────────┘
+                       ┌───────────────────────┐
+                       │  Foundation Document  │
+                       └───────────┬───────────┘
+            ┌──────────────────────┼─────────────────────┐
+            ▼                      ▼                     ▼
+  ┌───────────────────┐ ┌─────────────────────┐ ┌──────────────────┐
+  │ 1. Core Problem   │ │ 2. Vision / Users / │ │ 3. Tech Stack    │
+  │    & End Goal     │ │    Success / Values │ │    (Initial)     │
+  └───────────────────┘ └─────────────────────┘ └──────────────────┘
 ```
 
 The Foundation Document captures only what is intentionally fixed at the very beginning of a project — the reason for starting and the starting point. Each section answers a question that must be settled before work begins:
@@ -76,30 +72,7 @@ Details — especially the tech stack — are expected to evolve as work progres
 
 ## Step 2. Decompose into Slices
 
-```
-  ┌────────────────────────┐       ┌────────────────┐
-  │  Foundation Confirmed  │ ────► │   Decompose    │
-  └────────────────────────┘       └───────┬────────┘
-                                           │
-                ┌──────────────────────────┼──────────────────────────┐
-                ▼                          ▼                          ▼
-    ┌───────────────────────┐  ┌───────────────────────┐  ┌───────────────────────┐
-    │       Slice 1         │  │       Slice 2         │  │       Slice N         │
-    │ e.g. Project setup    │  │ e.g. Core feature A   │  │         ...           │
-    └───────────┬───────────┘  └───────────┬───────────┘  └───────────┬───────────┘
-                │                          │                          │
-                └──────────────────────────┼──────────────────────────┘
-                                           ▼
-                          ┌─────────────────────────────────┐
-                          │  For each slice:                │
-                          │   1. Define slice goal          │
-                          │      ("Something that works")   │
-                          │   2. Confirm tech stack details │
-                          │      required for this slice    │
-                          └─────────────────────────────────┘
-```
-
-Work is intentionally kept small. Each slice has a concrete deliverable that "works" — meaning the goal defined for that slice is fully completed and verifiable.
+Work is intentionally kept small. Each slice has a concrete deliverable that "works" — meaning the goal defined for that slice is fully completed and verifiable. Decompose runs **incrementally**: each call derives or updates the slice(s) visible right now (often just one), and is invoked again at the start of the next slice cycle. The slice list is never produced in one shot.
 
 ## Step 3. Slice Execution Loop
 
@@ -116,18 +89,10 @@ Each selected slice flows through these stages in sequence. After Compound, the 
 ```
   ┌─────────────────────────────────────────────────────────────────────────────────────────┐
   │                                    Foundation Phase                                     │
-  │                                                                                         │
-  │   • Problem / End Goal                                                                  │
-  │   • Vision / Users / Success / Values                                                   │
-  │   • Initial Tech Stack                                                                  │
   └────────────────────────────────────────┬────────────────────────────────────────────────┘
                                            ▼
   ┌─────────────────────────────────────────────────────────────────────────────────────────┐
   │                                     Decompose Phase                                     │
-  │                                                                                         │
-  │   • Break work into small units                                                         │
-  │   • Each unit must "work"                                                               │
-  │   • Prioritize slices                                                                   │
   └────────────────────────────────────────┬────────────────────────────────────────────────┘
                                            ▼
   ┌─────────────────────────────────────────────────────────────────────────────────────────┐
