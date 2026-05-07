@@ -82,7 +82,7 @@ Work is intentionally kept small. Each slice has a concrete deliverable that "wo
   └────────────────┘   └───────────────┘   └──────┘   └─────────────┘   └────────┘   └──────────┘   └────────┘
 ```
 
-Each selected slice flows through these stages in sequence. After Compound, the loop returns to a new slice — or, when needed, back to the Foundation Document for revision.
+Each selected slice flows through these stages in sequence, carrying its *closed demo line* and *1–3 Visible Outcomes* (set in the Select stage) as the goal the loop is converging on. After Compound, the loop returns to a new slice — or, when needed, back to the Foundation Document for revision.
 
 ## Integrated View
 
@@ -114,7 +114,7 @@ Each selected slice flows through these stages in sequence. After Compound, the 
 |-------|-----------|
 | **Foundation** | Fix only the long-lived essentials: the problem, the vision, and an initial tech stack. Avoid premature detail. |
 | **Decompose** | Break work into small slices. Each slice must produce something that works. |
-| **Select a Slice** | Pick the next slice and define its concrete completion criteria. |
+| **Select a Slice** | Pick the next slice and close its Definition of Done as a *closed demo line* plus 1–3 *Visible Outcomes*. |
 | **Brainstorming** | Diverge. Explore possible approaches before committing to one. |
 | **Plan** | Converge. Turn the chosen approach into a concrete, executable plan. |
 | **Development** | Implement against the plan. Verify the slice works end-to-end. |
