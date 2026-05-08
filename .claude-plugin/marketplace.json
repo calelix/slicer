@@ -1,0 +1,14 @@
+{
+  "name": "agent-workflow",
+  "owner": {
+    "name": "calelix",
+    "email": "jgpark7281@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "agent-workflow",
+      "source": "./",
+      "description": "Skills for the early stages (Foundation, Decompose, Select) of an agent-workflow methodology that builds projects through small, verifiable slices."
+    }
+  ]
+}
