@@ -208,7 +208,7 @@ When the conditions are met:
 
 1. Write or update `docs/select.md` (see format below).
 2. Confirm with the user whether to commit the file to git, then commit if confirmed (respect the user project's commit policy).
-3. Inform the user: "Select call complete. The next stage is Brainstorming for the Active slice. The skill ends here — what you do next is your choice."
+3. Inform the user: "Select call complete. Brainstorming and the downstream stages (Plan, Development, Review, Compound) are outside this plugin's scope — continue with whichever external plugin or workflow fits. This plugin does not recommend a specific tool; the choice is yours."
 
 Do not recommend any specific downstream tool.
 

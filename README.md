@@ -48,6 +48,36 @@ A structured, AI-assisted workflow for taking any project from idea to completio
        └──────────────┘
 ```
 
+## Scope
+
+This plugin covers only the first three stages — **Foundation**, **Decompose**, and **Select**. The remaining five stages (Brainstorming, Plan, Development, Review, Compound) are outside the plugin's scope; use external plugins or your own workflow for them. By design, this plugin does not recommend a specific external tool — the choice is yours, in keeping with the methodology's principle that the AI does not fill blanks by inference.
+
+## Installation
+
+This plugin is intended for personal local use, not public distribution. Register this repository as a local marketplace once — the plugin then stays loaded across all subsequent Claude Code sessions.
+
+Inside a Claude Code session:
+
+```
+/plugin marketplace add /path/to/agent-workflow
+/plugin install agent-workflow@agent-workflow
+```
+
+Or from the terminal:
+
+```bash
+claude plugin marketplace add /path/to/agent-workflow
+claude plugin install agent-workflow@agent-workflow
+```
+
+Once installed, the three skills are available under the `agent-workflow:` namespace and can be invoked explicitly as:
+
+- `/agent-workflow:defining-foundation`
+- `/agent-workflow:decomposing-slices`
+- `/agent-workflow:selecting-slice`
+
+Skills are also auto-invoked by Claude when their `description` matches the user's request, so explicit slash invocation is optional. After editing any skill file during development, run `/reload-plugins` inside Claude Code to pick up the changes without restarting.
+
 ## Step 1. Foundation Document
 
 ```
@@ -110,11 +140,18 @@ Each selected slice flows through these stages in sequence, carrying its *closed
 
 ## Stage Principles
 
+### Provided by this plugin
+
 | Stage | Principle |
 |-------|-----------|
 | **Foundation** | Fix only the long-lived essentials: the problem, the vision, and an initial tech stack. Avoid premature detail. |
 | **Decompose** | Break work into small slices. Each slice must produce something that works. |
 | **Select a Slice** | Pick the next slice and close its Definition of Done as a *closed demo line* plus 1–3 *Visible Outcomes*. |
+
+### Outside this plugin's scope (use external tools or your own workflow)
+
+| Stage | Principle |
+|-------|-----------|
 | **Brainstorming** | Diverge. Explore possible approaches before committing to one. |
 | **Plan** | Converge. Turn the chosen approach into a concrete, executable plan. |
 | **Development** | Implement against the plan. Verify the slice works end-to-end. |
