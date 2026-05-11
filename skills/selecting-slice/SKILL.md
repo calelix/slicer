@@ -140,7 +140,7 @@ Ask the user (translate as needed):
 
 The agent does **not** propose candidates. The agent does not paraphrase the demo line from `docs/slices.md` into a closed form — it asks the user.
 
-When the user states a sentence, write it as-is (in the user's language). Confirm: "Did I capture this right? `<one sentence>`". On approval, this becomes the closed demo line.
+When the user states a sentence, draft it as-is in the user's language for confirmation: "Did I capture this right? `<one sentence>`". On approval, this becomes the closed demo line, written to `docs/select.md` in English (see Language policy).
 
 If the user cannot pin down a closed demo line:
 
@@ -158,7 +158,7 @@ Ask the user (translate as needed):
 
 The agent does **not** propose candidates.
 
-Record each Outcome as the user states it (in the user's language). Confirm each one before adding the next. After the user is finished:
+Draft each Outcome as the user states it, in the user's language, and confirm each one before adding the next. Approved Outcomes are written to `docs/select.md` in English (see Language policy). After the user is finished:
 
 - **0 Outcomes** — The slice may be too vague. Tell the user: "We don't have any Visible Outcome yet. The slice may be too vague — consider re-running `decomposing-slices` to clarify or split it." Record the slot as `TBD: <reason>` if the user insists on proceeding.
 - **1–3 Outcomes** — OK, proceed.
@@ -235,7 +235,7 @@ Use `date +%Y-%m-%d` to obtain the date — never guess. Set `created` only on f
 
 ### <demo line copied verbatim from docs/slices.md>
 
-**Closed demo line**: <one sentence in user's language>
+**Closed demo line**: <one sentence in English>
 
 **Visible Outcomes**:
 - <outcome 1>
@@ -293,10 +293,12 @@ Update mode is the *primary* mode of operation in this methodology — first cal
 
 ## Language policy
 
-- This `SKILL.md` is in English so Claude's skill-matching mechanism works reliably.
-- The questions inside the procedure are written in English here, but the agent translates them to the user's language when speaking with the user.
-- The agent records the closed demo line and Visible Outcomes in the user's language, faithfully reflecting the user's wording.
-- Status keywords (`completed`, `superseded`, `deferred`, `paused`) are recorded in English in the file. The agent translates when speaking to the user but writes the English keyword.
+- This `SKILL.md` is in English so Claude's skill-matching mechanism works reliably; treat the questions inside as guides, not literal scripts.
+- **Conversation (questions you ask, drafts you show for approval):** the user's language. Translate the English questions, and present approval drafts in the user's language so the user can verify intent in their own words.
+- **Written artifact (`docs/select.md`):** English, regardless of the conversation language. After the user approves the closed demo line and Visible Outcomes in their language, translate them to English when writing to the file. This applies to closed demo lines, Visible Outcomes, History entries, and Foundation Update Candidates.
+- Preserve proper nouns and user-supplied technical terms (product names, library names, domain jargon) as the user wrote them, even inside English translations.
+- The Active slice's H3 header is copied **verbatim** from `docs/slices.md`'s Confirmed Slices. Since `docs/slices.md` is itself written in English (per the Decompose skill's language policy), this verbatim copy is naturally English — do not re-translate.
+- Status keywords (`completed`, `superseded`, `deferred`, `paused`) are recorded in English in the file. The agent translates when speaking to the user but writes the English keyword. (Consistent with the general artifact policy above.)
 
 ## What this skill does NOT do
 

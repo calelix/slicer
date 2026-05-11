@@ -48,7 +48,12 @@ When a value is missing, either ask the user or mark the slot as `TBD: <reason>`
 
 ## Procedure
 
-**Note on language:** All questions in this file are written in English so that Claude's skill-matching mechanism works reliably. When asking the user, translate them into the user's language. The question texts here are guides, not literal scripts.
+**Note on language:** All questions in this file are written in English so that Claude's skill-matching mechanism works reliably; treat them as guides, not literal scripts.
+
+Language conventions during execution:
+
+- **Conversation (questions you ask, drafts you show for approval):** the user's language. Translate the English questions, and present approval drafts in the user's language so the user can verify intent in their own words.
+- **Written artifact (`docs/foundation.md`):** English, regardless of the conversation language. After the user approves a section in their language, translate it to English when writing it to the file. Preserve proper nouns and user-supplied technical terms (product names, library names, domain jargon) as the user wrote them.
 
 ### Step 1 — Context check
 

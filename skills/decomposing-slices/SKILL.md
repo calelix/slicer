@@ -103,7 +103,7 @@ For each slice being derived or updated in this call, ask the user — one quest
 
 The agent does **not** propose candidate slices. The user states; the agent records.
 
-When the user has stated a slice, write it as a single rough demo line in the user's voice. Confirm: "Did I capture this right? `<one line>`". On approval, this becomes a *confirmed slice*.
+When the user has stated a slice, draft it as a single rough demo line in the user's language for confirmation: "Did I capture this right? `<one line>`". On approval, this becomes a *confirmed slice*, written to `docs/slices.md` in English (see Language policy).
 
 If the user gives a vague intent that they cannot yet collapse to a single line, record it as a *tentative slice* under `## Tentative Slices` with a `TBD: <reason>` annotation describing why it is not yet pinned down. Tentative slices are first-class citizens in `docs/slices.md` — they hold space for what is not yet ready to be confirmed.
 
@@ -235,9 +235,10 @@ Update mode is the *primary* mode of operation in the methodology — first call
 
 ## Language policy
 
-- This `SKILL.md` is in English so Claude's skill-matching mechanism works reliably.
-- The questions inside the procedure are written in English here, but the agent translates them to the user's language when speaking with the user.
-- The agent records slice lines in the user's language, faithfully reflecting the user's wording. Do not back-translate slice lines to English in `docs/slices.md`.
+- This `SKILL.md` is in English so Claude's skill-matching mechanism works reliably; treat the questions inside as guides, not literal scripts.
+- **Conversation (questions you ask, drafts you show for approval):** the user's language. Translate the English questions, and present approval drafts in the user's language so the user can verify intent in their own words.
+- **Written artifact (`docs/slices.md`):** English, regardless of the conversation language. After the user approves a slice line in their language, translate it to English when writing it to the file. This applies to slice lines, tentative-slice descriptions, change-log entries, and Foundation Update Candidates.
+- Preserve proper nouns and user-supplied technical terms (product names, library names, domain jargon) as the user wrote them, even inside English translations.
 
 ## What this skill does NOT do
 
