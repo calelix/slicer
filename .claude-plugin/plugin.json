@@ -1,6 +1,6 @@
 {
-  "name": "agent-workflow",
-  "description": "Skills for the early stages (Foundation, Decompose, Select) of an agent-workflow methodology that builds projects through small, verifiable slices.",
+  "name": "slicer",
+  "description": "Skills for the early stages (Foundation, Decompose, Select) of the slicing methodology that builds projects through small, verifiable slices.",
   "version": "0.1.0",
   "author": {
     "name": "calelix"

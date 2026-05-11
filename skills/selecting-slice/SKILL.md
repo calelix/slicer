@@ -1,7 +1,7 @@
 ---
 name: selecting-slice
 description: Use when the user wants to select the next slice from docs/slices.md
-  and close its Definition of Done. Third stage of the agent-workflow methodology,
+  and close its Definition of Done. Third stage of the slicing methodology,
   after Decompose and before Brainstorming. Outputs docs/select.md with one Active
   slice (closed demo line + 1-3 Visible Outcomes) and a History of past selections.
 ---
@@ -23,7 +23,7 @@ This skill assumes both `docs/foundation.md` and `docs/slices.md` exist, and tha
 
 ## Background
 
-This skill is the third stage of the agent-workflow methodology. The methodology rests on a specific failure mode: when an AI is given a goal and asked to brainstorm, plan, or generate code, it tends to reach for the ultimate goal in *one big inference*, filling unanswered blanks with its own reasoning.
+This skill is the third stage of the slicing methodology. The methodology rests on a specific failure mode: when an AI is given a goal and asked to brainstorm, plan, or generate code, it tends to reach for the ultimate goal in *one big inference*, filling unanswered blanks with its own reasoning.
 
 Select is the last destination-stage of the methodology. After Select, the methodology only refines *how* (Brainstorming converges to an approach; Plan converges to a procedure; Development executes; Review verifies; Compound captures learning). The Goal itself is finalized here, in the form of the closed demo line plus 1–3 Visible Outcomes.
 

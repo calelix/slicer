@@ -1,4 +1,4 @@
-# Agent Workflow
+# Slicer
 
 A structured, AI-assisted workflow for taking any project from idea to completion through small, verifiable slices.
 
@@ -59,22 +59,22 @@ This plugin is intended for personal local use, not public distribution. Registe
 Inside a Claude Code session:
 
 ```
-/plugin marketplace add /path/to/agent-workflow
-/plugin install agent-workflow@agent-workflow
+/plugin marketplace add /path/to/slicer
+/plugin install slicer@slicer
 ```
 
 Or from the terminal:
 
 ```bash
-claude plugin marketplace add /path/to/agent-workflow
-claude plugin install agent-workflow@agent-workflow
+claude plugin marketplace add /path/to/slicer
+claude plugin install slicer@slicer
 ```
 
-Once installed, the three skills are available under the `agent-workflow:` namespace and can be invoked explicitly as:
+Once installed, the three skills are available under the `slicer:` namespace and can be invoked explicitly as:
 
-- `/agent-workflow:defining-foundation`
-- `/agent-workflow:decomposing-slices`
-- `/agent-workflow:selecting-slice`
+- `/slicer:defining-foundation`
+- `/slicer:decomposing-slices`
+- `/slicer:selecting-slice`
 
 Skills are also auto-invoked by Claude when their `description` matches the user's request, so explicit slash invocation is optional. After editing any skill file during development, run `/reload-plugins` inside Claude Code to pick up the changes without restarting.
 

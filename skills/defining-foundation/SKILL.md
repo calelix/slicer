@@ -2,7 +2,7 @@
 name: defining-foundation
 description: Use when starting a new project to create its Foundation Document
   — the destination (why, what, initial tooling) but not the path. First stage
-  of the agent-workflow methodology, before Decompose and Select. Outputs
+  of the slicing methodology, before Decompose and Select. Outputs
   docs/foundation.md.
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: decomposing-slices
 description: Use when the user wants to derive or update the next slice(s) for
-  a project that already has docs/foundation.md. Second stage of the agent-workflow
+  a project that already has docs/foundation.md. Second stage of the slicing
   methodology, after Define and before Select. Operates incrementally — produces
   one or more slices at a time, not a full N-list. Outputs docs/slices.md.
 ---
@@ -22,7 +22,7 @@ This skill assumes a `docs/foundation.md` exists. If it does not, refuse and dir
 
 ## Background
 
-This skill is the second stage of the agent-workflow methodology. The methodology rests on a specific failure mode: when an AI is given a goal and asked to brainstorm, plan, or generate code, it tends to reach for the ultimate goal in *one big inference*, filling unanswered blanks with its own reasoning.
+This skill is the second stage of the slicing methodology. The methodology rests on a specific failure mode: when an AI is given a goal and asked to brainstorm, plan, or generate code, it tends to reach for the ultimate goal in *one big inference*, filling unanswered blanks with its own reasoning.
 
 Decomposition is itself susceptible to this failure mode. If you try to produce a full N-slice list at once, you must reason about *how the project will evolve* across slices — including slices whose preconditions don't exist yet. That is a small one-big-inference. The skill therefore operates **incrementally**: each call derives or updates only the slice(s) visible right now, with priorities relative to what is currently known. Future slices remain undecided until they come into view, typically after a slice cycle completes.
 
