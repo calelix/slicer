@@ -2,6 +2,17 @@
 
 A structured, AI-assisted workflow for taking any project from idea to completion through small, verifiable slices.
 
+## Why
+
+Given a goal, AI tends to reach for it in **one big inference** — answering the *destination* while silently filling in the unanswered *path* with its own assumptions. The result is consistent: progress stalls without anything working end-to-end, partially generated artifacts pile up, or an elaborate non-working structure is left behind. And the tendency reproduces at every scale — even finely sliced work swells back into another single leap.
+
+Slicer's answer is two principles applied at every stage:
+
+1. **Each stage answers only its own destination, leaving the next stage's path blank.** Foundation fixes *why/what/with what* but not *how to slice*; Decompose fixes the slices but not *how to implement them*; and so on.
+2. **The AI does not fill blanks by inference.** A skill records only what the user explicitly stated — no guessing, no plausible defaults. A missing value is asked about or marked `TBD: <reason>`. An honestly blank slot beats a silently filled one.
+
+See [docs/methodology/](docs/methodology/) for the full reasoning.
+
 ## High-Level Flow
 
 ```
