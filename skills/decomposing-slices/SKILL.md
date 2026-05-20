@@ -67,6 +67,7 @@ Quickly inspect:
 
 - Is there a `docs/foundation.md`? If **no**, refuse: "This skill needs a Foundation document at `docs/foundation.md`. Run the `defining-foundation` skill first." Do not generate a shorthand Foundation. Stop.
 - Is there a `docs/slices.md`? If **yes**, switch to **update mode** (see below). If **no**, this is a first call.
+- If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker), print a one-line count: "N unresolved Foundation Update Candidate(s) across slices.md/select.md — consider running `defining-foundation` in update mode." Count only; do not infer which candidates matter or act on them.
 - Read `docs/foundation.md`'s three sections, focusing on the End Goal (Section 1) and any constraints from Vision/Users (Section 2). You will use Foundation as the *starting point* for slice derivation, not copy its content into slices (slices are not Foundation's path).
 
 ### Step 2 — First call vs. update mode branch
@@ -124,15 +125,16 @@ When the fallback triggers, the agent presents 1–3 candidate slices, each as a
 
 If the user can't restate, the slice does not get recorded. The user can use the original AI candidate as inspiration in a future call.
 
-### Step 5 — Depth heuristic — slice-line sanity check
+### Step 5 — Slice-line sanity check — size and Foundation consistency
 
 For each newly written slice line, evaluate:
 
 - **Right size** — One line that names a *user-visible action* the user can demonstrate when the slice is done. Approve.
 - **Too big** — Hard to fit on one line; multiple actions bundled. Suggest splitting and ask the user to split it themselves (do not split it for them).
 - **Too small** — The line names an *internal step* ("create the database schema", "draw the login form") rather than a user-visible demo. Suggest absorbing it into a larger slice or merging with a sibling. Ask the user; do not merge for them.
+- **Contradicts Foundation** — The slice line conflicts with something stated in `docs/foundation.md` — most often the End Goal, a Core Value, or a stated constraint. Do not silently accept it, and do not rewrite it yourself. Name the conflict to the user — quote the Foundation text and the slice line — and ask the user to choose: drop or rework the slice, or run `defining-foundation` in update mode if the Foundation itself is now wrong. This is a consistency check against the one document Decompose already reads; it is not blank-filling by inference.
 
-The user always makes the final call on size.
+The user always makes the final call on size and on resolving any Foundation conflict.
 
 ### Step 6 — Path-question deflection (in-slice implementation)
 
@@ -214,7 +216,7 @@ Section rules:
 - **Confirmed Slices** — Numbered list. Numbers are positional in the current sort order; they are not stable identifiers. Each entry is a single rough demo line plus a priority tag. Do not include implementation detail; if such detail leaks in, the user has answered at the path level — strip it before writing.
 - **Tentative Slices** — Bullet list. Each entry is a vague demo line followed by `TBD: <reason>` describing why it is not yet pinned down. Tentative slices hold space; they are not failures.
 - **Change Log** — H3 date headers, most recent first. Each call appends one new H3 block. Within a block, one bullet per change, of form: `- <kind>: "<short quote>"` where `<kind>` is one of `Added`, `Split`, `Merged`, `Reordered`, `Deleted`, `Clarified`. Quotes use the demo line as it stood at the time of the change. Optionally append a one-clause reason.
-- **Foundation Update Candidates** — Bullet list. Each entry is a candidate tech / scope decision discovered during a Decompose call that should probably be folded into `docs/foundation.md`. List date flagged. The actual Foundation update is the responsibility of `defining-foundation` in update mode — Decompose only flags. When no candidates exist, keep the section heading and write `(none)` as the only line; do not omit the heading.
+- **Foundation Update Candidates** — Bullet list. Each entry is a candidate tech / scope decision discovered during a Decompose call that should probably be folded into `docs/foundation.md`. List date flagged. The actual Foundation update is the responsibility of `defining-foundation` in update mode — Decompose only flags. A candidate may also carry a `— resolved in foundation.md on <date>` marker appended by `defining-foundation` once that candidate has been folded in; preserve any such marker verbatim when rewriting this section. When no candidates exist, keep the section heading and write `(none)` as the only line; do not omit the heading.
 
 The slice line itself: a *single rough demo line* of what works when the slice is done, from the user's point of view. Open-ended phrasing (closure happens in Select). No implementation detail.
 

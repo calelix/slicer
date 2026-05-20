@@ -29,7 +29,7 @@ Select is the last destination-stage of the methodology. After Select, the metho
 
 Select is itself susceptible to the failure mode in two specific ways:
 
-1. **DoD inflation.** If the agent allows long checklists (5+ items), each new item invites path-level detail ("login button is in the top-right", "/auth/login endpoint is called"). The skill caps Visible Outcomes at 1–3 to keep the DoD a *destination*, not a path.
+1. **DoD inflation.** Path-level detail can pollute the DoD through two separate channels. *By count* — long checklists (5+ items) invite path-level items ("login button is in the top-right", "/auth/login endpoint is called"); the skill caps Visible Outcomes at 1–3 to keep the DoD a *destination*, not a path. *By depth* — path-level detail can also enter *inside* a single Visible Outcome without lengthening the list, as a locator baked into one Outcome ("a spec file is produced at a specific directory"). The count cap does not catch this; Step 6's per-Outcome destination scan is the separate defense line for it.
 2. **Slice rubber-stamping.** If the agent proposes a candidate slice and the user says "yes, that one", the user has not actually engaged with the choice. The skill restricts agent-proposed candidates to a B4 fallback that fires only on explicit user signal, and even then requires the user to restate the chosen candidate in their own words.
 
 See `references/01-problem.md` for the full problem statement and `references/02-principle.md` for the two governing principles.
@@ -76,6 +76,7 @@ Quickly inspect:
 - Is there a `docs/slices.md`? If **no**, refuse: "This skill needs a Decompose document at `docs/slices.md`. Run the `decomposing-slices` skill first." Stop.
 - Does `docs/slices.md` have at least one slice under `## Confirmed Slices`? If **no**, refuse: "There are no Confirmed Slices yet. Run the `decomposing-slices` skill to confirm at least one slice first." Stop.
 - Is there a `docs/select.md`? If **yes**, read it and check for an Active slice.
+- If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker), print a one-line count: "N unresolved Foundation Update Candidate(s) — consider running `defining-foundation` in update mode." Count only; no inference, no action.
 
 ### Step 2 — Mode branch
 
@@ -158,7 +159,11 @@ Ask the user (translate as needed):
 
 The agent does **not** propose candidates.
 
-Draft each Outcome as the user states it, in the user's language, and confirm each one before adding the next. Approved Outcomes are written to `docs/select.md` in English (see Language policy). After the user is finished:
+Draft each Outcome as the user states it, in the user's language, and confirm each one before adding the next. Approved Outcomes are written to `docs/select.md` in English (see Language policy).
+
+Before finalizing each Visible Outcome, scan it for a *destination locator* — any token that points at an implementation location rather than an observable fact: a file path, a directory, a URL or route, an API endpoint, a function or module name, a config key. If one is present, the Outcome has answered at the path level. Do not record it as drafted. Say: "That names *where* the result lands — that's a downstream path decision. I'll record only the observable fact." Rewrite the Outcome with the locator stripped (e.g., "a spec file is produced at a specific directory" becomes "a spec file is produced"), and confirm the stripped form with the user. The location stays undecided here on purpose — filling it now would be inferring a blank. If the location later becomes a fixed contract, the user pins it through the "Refine current Active's DoD" mode (Step 2), *after* it is decided, not before.
+
+After the user is finished:
 
 - **0 Outcomes** — The slice may be too vague. Tell the user: "We don't have any Visible Outcome yet. The slice may be too vague — consider re-running `decomposing-slices` to clarify or split it." Record the slot as `TBD: <reason>` if the user insists on proceeding.
 - **1–3 Outcomes** — OK, proceed.
@@ -191,6 +196,7 @@ If at any point the user starts answering at the path level inside the slice ("t
 
 - It is an *implementation choice for this slice* — say: "That sounds like an in-slice implementation decision. I'll leave it for Brainstorming or later — I'm only capturing what the slice's done state looks like, not how it's built." Return to the question you were on.
 - It is a *new tech decision not in `docs/foundation.md`* — say: "That sounds like a tech-stack decision that should live in Foundation, not in a slice's DoD. I'll list it as a Foundation update candidate; you can run `defining-foundation` in update mode to actually fold it in." Add it to `## Foundation Update Candidates` in `docs/select.md` (and return to the question you were on).
+- It is an *observation result accompanied by an implementation locator* (e.g., "the skill produces a spec file at a specific directory") — keep the observation, strip the locator. Say: "I'll record that a spec file is produced — that's the observable fact. *Where* it lands is a downstream path decision; I'm leaving it blank on purpose." Record only the location-free observation in the DoD. If the location later becomes a fixed contract, the user pins it through "Refine current Active's DoD" mode — after it is decided, not before.
 
 Note: `docs/slices.md` may also have a `## Foundation Update Candidates` section from prior Decompose calls. Select does not modify `docs/slices.md` — it only writes to its own file. The user reconciles both files when running `defining-foundation` in update mode.
 
@@ -271,7 +277,7 @@ Section rules:
 
 - **Active** — At most one slice. The H3 header carries the slice's demo line *exactly as it appears in `docs/slices.md`'s `## Confirmed Slices`* — do not paraphrase. Below the H3, three bold-label fields: `**Closed demo line**:`, `**Visible Outcomes**:` (1–3 bullets), `**Selected on**:` (date). When no slice is Active, omit the `### <demo line>` block but keep the `## Active` H2 header with a single line `(none)`.
 - **History** — Reverse-chronological (most recent first). Each entry is one H3 with the closing date and the demo line, then four bold-label fields: `**Closed demo line**:`, `**Visible Outcomes**:`, `**Selected on**:` (the date the slice originally became Active), `**Status**:` (one of `completed`, `superseded`, `deferred`, `paused`). When History is empty, write `(none)` under the `## History` H2.
-- **Foundation Update Candidates** — Bullet list. Each entry is a candidate tech / scope decision discovered during a Select call that should probably be folded into `docs/foundation.md`. List date flagged. The actual Foundation update is the responsibility of `defining-foundation` in update mode — Select only flags. When no candidates exist, the section heading is kept and `(none)` is written as the only line; do not omit the heading.
+- **Foundation Update Candidates** — Bullet list. Each entry is a candidate tech / scope decision discovered during a Select call that should probably be folded into `docs/foundation.md`. List date flagged. The actual Foundation update is the responsibility of `defining-foundation` in update mode — Select only flags. A candidate may also carry a `— resolved in foundation.md on <date>` marker appended by `defining-foundation` once that candidate has been folded in; preserve any such marker verbatim when rewriting this section. When no candidates exist, the section heading is kept and `(none)` is written as the only line; do not omit the heading.
 
 The status keywords are recorded in **English** (`completed`, `superseded`, `deferred`, `paused`) regardless of the user's chat language. The skill translates the keywords when *speaking* to the user but writes the English form to the file.
 

@@ -70,7 +70,7 @@ If `docs/foundation.md` exists, switch to **update mode** (see below).
 
 The Foundation Document has three sections, in this fixed order:
 
-1. **Core Problem & End Goal** — Why does this project exist? What does "done" look like?
+1. **Core Problem & End Goal** — Why does this project exist? What does "done" look like, and what constraints must "done" honor?
 2. **Vision / Target Users / Success / Core Values** — What is the vision? Who is it for? What does success look like to them? What values come first when there's a tradeoff?
 3. **Tech Stack (Initial)** — What language(s)? What framework(s) or major libraries? Other large tooling decisions?
 
@@ -82,10 +82,11 @@ For each section:
 
 #### Questions for Section 1: Core Problem & End Goal
 
-Ask, in order, until both answers are clear:
+Ask, in order, until the answers are clear:
 
 1. "What problem are you trying to solve? Who has this problem, and what's currently wrong with how it's being addressed?"
 2. "What does 'done' look like for this project? When can it be called complete?"
+3. "Are there constraints or non-negotiables the solution must honor — things that, if violated, mean the goal is effectively not met? (Capture only constraints this strong; ordinary preferences and implementation choices are not Foundation material.)"
 
 #### Questions for Section 2: Vision / Target Users / Success / Core Values
 
@@ -155,11 +156,13 @@ On first write, set both `created` and `updated` to today's date. **Obtain the d
 When `docs/foundation.md` already exists at skill invocation:
 
 1. Read the current document.
-2. Show the three section names and ask the user which section(s) to update. Use multiple choice and allow multiple selections.
-3. For each selected section, walk it from the start of its question list, reusing the procedure above.
-4. Sections the user did not select remain untouched.
-5. On termination, set `updated` in the frontmatter to today's date — again obtained by running `date +%Y-%m-%d` in the shell, never guessed. Leave `created` unchanged.
-6. Confirm git commit with the user.
+2. **Foundation Update Candidate intake.** Read `docs/slices.md` and `docs/select.md` if they exist, and collect every item under their `## Foundation Update Candidates` sections. A candidate counts as *unresolved* if its bullet has no `resolved in foundation.md` marker (see step 7). If any unresolved candidates exist, present them to the user before the section-selection question: "Decompose/Select flagged N unresolved Foundation Update Candidate(s): <list each, with its source file and flag date>. Which of these should be folded into this update?" Walk each candidate the user picks through the relevant section's question list. This step only *reads* `docs/slices.md` and `docs/select.md` — it does not modify them here.
+3. Show the three section names and ask the user which section(s) to update. Use multiple choice and allow multiple selections. (Candidates the user chose to fold in already imply their target section; still confirm the full section list with the user.)
+4. For each selected section, walk it from the start of its question list, reusing the procedure above.
+5. Sections the user did not select remain untouched.
+6. On termination, set `updated` in the frontmatter to today's date — again obtained by running `date +%Y-%m-%d` in the shell, never guessed. Leave `created` unchanged.
+7. **Clear resolved candidates.** For each Foundation Update Candidate folded into Foundation in this call, append ` — resolved in foundation.md on <YYYY-MM-DD>` to that candidate's bullet in its source file (`docs/slices.md` or `docs/select.md`). This is the *only* case in which this skill writes to a file other than `docs/foundation.md`: it appends a resolution marker to an already-existing candidate bullet and never alters anything else in those files. The bullet is never deleted — history is preserved. Confirm these marker edits with the user before saving.
+8. Confirm git commit with the user (including the candidate-marker edits, if any).
 
 If the user wants to add a `TBD` to a section that does not currently have one, treat that as updating that section.
 
@@ -171,3 +174,4 @@ If the user wants to add a `TBD` to a section that does not currently have one, 
 - It does not pick what to build first. (Select stage.)
 - It does not recommend any specific downstream tool. The user chooses.
 - It does not guess at unanswered values. They become `TBD`.
+- It does not edit `docs/slices.md` or `docs/select.md`, except — in update mode — to append a `resolved in foundation.md on <date>` marker to a Foundation Update Candidate it has just folded in. Slice content and Select content are never otherwise touched.
