@@ -105,7 +105,7 @@ Read the existing file. Then ask the user which kind(s) of change this call is f
 > - [ ] Merge multiple slices into one
 > - [ ] Reorder slice priorities
 > - [ ] Delete a slice
-> - [ ] Clarify a tentative slice into a confirmed slice
+> - [ ] Clarify a slice — promote a tentative slice to confirmed, or refine the wording of a confirmed slice
 > - [ ] Other / I'm not sure yet — let me describe it freely
 
 If the user picks "Other", let them describe in their own words and reflect back which of the six kinds (or combination) it most resembles. Confirm with the user before proceeding.
@@ -125,6 +125,8 @@ The agent does **not** propose candidate slices. The user states; the agent reco
 When the user has stated a slice, draft it as a single rough demo line in the user's language for confirmation: "Did I capture this right? `<one line>`". On approval, this becomes a *confirmed slice*, written to `docs/slices.md` in English (see Language policy).
 
 If the user gives a vague intent that they cannot yet collapse to a single line, record it as a *tentative slice* under `## Tentative Slices` with a `TBD: <reason>` annotation describing why it is not yet pinned down. Tentative slices are first-class citizens in `docs/slices.md` — they hold space for what is not yet ready to be confirmed.
+
+**Refine-wording sub-case of Clarified.** When the call is a Clarify and the target is an already-Confirmed slice (not a Tentative one), the user first names which Confirmed Slice to refine — by number or by quoting its current demo line. The agent then asks the user to state the new demo line using the same questions above. The old demo line is recorded in the Change Log alongside the new one (see Output format); the new line replaces the old one in `## Confirmed Slices`. The agent does not infer a refined wording from the old line.
 
 ### Step 4 — B4 fallback (user-explicit only)
 
@@ -234,7 +236,11 @@ Section rules:
 
 - **Confirmed Slices** — Numbered list. Numbers are positional in the current sort order; they are not stable identifiers. Each entry is a single rough demo line plus a priority tag. Do not include implementation detail; if such detail leaks in, the user has answered at the path level — strip it before writing.
 - **Tentative Slices** — Bullet list. Each entry is a vague demo line followed by `TBD: <reason>` describing why it is not yet pinned down. Tentative slices hold space; they are not failures.
-- **Change Log** — H3 date headers, most recent first. Each call appends one new H3 block. Within a block, one bullet per change, of form: `- <kind>: "<short quote>"` where `<kind>` is one of `Added`, `Split`, `Merged`, `Reordered`, `Deleted`, `Clarified`. Quotes use the demo line as it stood at the time of the change. Optionally append a one-clause reason.
+- **Change Log** — H3 date headers, most recent first. Each call appends one new H3 block. Within a block, one bullet per change, of form: `- <kind>: "<short quote>"` where `<kind>` is one of `Added`, `Split`, `Merged`, `Reordered`, `Deleted`, `Clarified`. Quotes use the demo line as it stood at the time of the change. For `Clarified`, distinguish the two sub-cases so the historical record stays unambiguous:
+  - Promote: `Clarified (tentative→confirmed): "<old tentative line>"`
+  - Rewording: `Clarified (rewording): "<old line>" → "<new line>"`
+
+  Optionally append a one-clause reason to any bullet.
 - **Foundation Update Candidates** — Bullet list. Each entry is a candidate tech / scope decision discovered during a Decompose call that should probably be folded into `docs/foundation.md`. List date flagged. The actual Foundation update is the responsibility of `defining-foundation` in update mode — Decompose only flags. A candidate may also carry a `— resolved in foundation.md on <date>` marker appended by `defining-foundation` once that candidate has been folded in; preserve any such marker verbatim when rewriting this section. When no candidates exist, keep the section heading and write `(none)` as the only line; do not omit the heading.
 
 The slice line itself: a *single rough demo line* of what works when the slice is done, from the user's point of view. Open-ended phrasing (closure happens in Select). No implementation detail.
