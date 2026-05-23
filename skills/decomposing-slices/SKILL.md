@@ -69,6 +69,24 @@ Quickly inspect:
 - Is there a `docs/slices.md`? If **yes**, switch to **update mode** (see below). If **no**, this is a first call.
 - If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker), print a one-line count: "N unresolved Foundation Update Candidate(s) across slices.md/select.md — consider running `defining-foundation` in update mode." Count only; do not infer which candidates matter or act on them.
 - Read `docs/foundation.md`'s three sections, focusing on the End Goal (Section 1) and any constraints from Vision/Users (Section 2). You will use Foundation as the *starting point* for slice derivation, not copy its content into slices (slices are not Foundation's path).
+- **State preview (update mode only).** Before showing the Step 2 verb menu, print a single table summarizing the current slices.md state cross-referenced with `docs/select.md` if it exists. Skip this on first call (no slices.md yet). Format:
+
+  ```
+  **Active in select.md**: <demo line | (none)>  ·  **Unresolved FUC**: <count>
+
+  | #   | Demo line             | Priority    | Last cycle              |
+  |-----|-----------------------|-------------|-------------------------|
+  | 1   | <demo line>           | <priority>  | <status (date) | (never selected)> |
+  | 2 ★ | <demo line>           | <priority>  | <status (date) | (never selected)> |
+  | T1  | <tentative demo line> | (tentative) | TBD: <reason>           |
+  ```
+
+  Rules:
+  - "★" on the row number marks the Active slice (matched against `docs/select.md`'s `## Active` H3).
+  - Tentative rows use prefix "T" (T1, T2, …). Priority column shows `(tentative)`; Last cycle column carries the TBD reason.
+  - Demo lines are quoted verbatim — never summarized or paraphrased.
+  - Last cycle column: scan `docs/select.md`'s `## History`. If the slice's demo line appears there, show the most-recent status (`completed`, `superseded`, `deferred`, `paused`) with its closing date. If the slice was never in History, show `(never selected)`.
+  - This is a count-and-quote preview only. Do not append recommendations, hints, or commentary about which slice to pick or what to change. Principle 2 (no blank-filling by inference) applies.
 
 ### Step 2 — First call vs. update mode branch
 
