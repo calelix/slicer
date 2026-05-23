@@ -183,7 +183,7 @@ The skill terminates only when **all** of the following hold:
 When the conditions are met:
 
 1. Write or update `docs/slices.md` (see format below).
-2. **Drift check against `docs/select.md`.** If `docs/select.md` exists and has an Active slice whose H3 demo line does not appear verbatim in the current `## Confirmed Slices` of `docs/slices.md`, print a one-line nudge: "The Active slice's H3 in `docs/select.md` is now stale — run `selecting-slice` and pick 'Re-sync Active H3' mode to update it." Read-only check; do **not** write to `docs/select.md`. If `docs/select.md` does not exist, has no Active slice, or its Active H3 still matches a current Confirmed Slice, emit nothing.
+2. **Drift check against `docs/select.md`.** The Active slice's H3 in `docs/select.md` *is* its identifier — it must name (verbatim) a current Confirmed Slice in `docs/slices.md`. If `docs/select.md` has an Active slice whose H3 no longer names any current Confirmed Slice — because this Decompose call just edited, split, merged, or deleted the slice it named — print a one-line nudge: "Active in `docs/select.md` no longer names a Confirmed Slice in `docs/slices.md` — run `selecting-slice` and pick 'Re-sync Active H3' mode to update its identifier." Read-only check; do **not** write to `docs/select.md`. If `docs/select.md` does not exist, has no Active slice, or its Active identifier still names a current Confirmed Slice, emit nothing.
 3. Confirm with the user whether to commit the file to git, then commit if confirmed (respect the user project's commit policy).
 4. Inform the user: "Decompose call complete. The next stage is Select — run `/selecting-slice` and pick which Confirmed Slice to take on. The skill ends here — what you do next is your choice." If the Step 8 drift nudge fired in step 2, prepend: "Re-sync the Active H3 first (per the nudge above) before picking a new slice."
 
@@ -280,4 +280,4 @@ Update mode is the *primary* mode of operation in the methodology — first call
 - It does not recommend any specific downstream tool. The user chooses.
 - It does not infer that the user is stuck. The B4 fallback fires only on explicit user signal.
 - It does not record an AI-proposed candidate verbatim. The user must restate it in their own words.
-- It does not write to `docs/select.md`. The Step 8 drift check reads it to detect a stale Active-slice H3 and emits only a one-line nudge — the user resolves drift by re-invoking `selecting-slice` in Re-sync mode.
+- It does not write to `docs/select.md`. The Step 8 drift check reads it to detect a stale Active-slice identifier (its H3) and emits only a one-line nudge — the user resolves drift by re-invoking `selecting-slice` in Re-sync mode.

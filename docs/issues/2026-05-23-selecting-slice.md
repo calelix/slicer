@@ -11,10 +11,12 @@ status: resolved
 
 ## Summary
 
-`selecting-slice` declares that the Active slice's H3 header is copied verbatim
-from `docs/slices.md`'s Confirmed Slices, but no skill maintains that invariant
-when Decompose later mutates the slice's demo line — so `docs/select.md`'s H3
-can silently drift out of sync with the source of truth.
+`selecting-slice` says the Active slice's H3 header *is* its identifier in
+`docs/select.md` — a verbatim copy of a Confirmed Slice's demo line in
+`docs/slices.md`, which is how this file names which Confirmed Slice is
+currently Active. But no skill maintains that identifier link when Decompose
+later edits, splits, merges, or deletes the slice — so `docs/select.md`'s
+Active identifier can silently come to name a slice that no longer exists.
 
 ## Problem
 
@@ -22,10 +24,12 @@ On 2026-05-23, during a Select call, the user noticed that an already-Active
 slice's demo line needed wording polish (the host project name had to be made
 explicit). The user invoked `decomposing-slices` and used Clarified to refine
 the wording in `docs/slices.md`. After the Decompose call returned,
-`docs/select.md`'s Active H3 still carried the *old* demo line — the invariant
-declared by Select ("H3 is copied verbatim from slices.md") was broken on disk.
-No skill procedure surfaced this. The user had to make a mechanical Edit outside
-any skill to restore the invariant, then a separate commit.
+`docs/select.md`'s Active H3 still carried the *old* demo line — the identifier
+link declared by Select ("the H3 names which Confirmed Slice is Active,
+verbatim") was broken on disk: select.md was now pointing at a demo line that
+no longer existed in `docs/slices.md`'s Confirmed Slices. No skill procedure
+surfaced this. The user had to make a mechanical Edit outside any skill to
+restore the identifier, then a separate commit.
 
 This was not specific to Clarified: Split, Merged, and Deleted in Decompose can
 also mutate a Confirmed Slice's demo line or remove the slice entirely. In any
@@ -33,8 +37,9 @@ of those cases, an Active slice in `docs/select.md` would be left dangling.
 
 ## Root cause
 
-An invariant ("Active H3 mirrors slices.md verbatim") was declared in
-`selecting-slice` but no skill was assigned maintenance responsibility:
+The identifier link ("the Active H3 names a current Confirmed Slice,
+verbatim") was declared in `selecting-slice` but no skill was assigned
+responsibility for keeping that link valid:
 
 1. `selecting-slice` reads `docs/slices.md` only at slice-naming time (Step 3).
    After that, the H3 is frozen in `docs/select.md`. No procedure re-reads
@@ -52,14 +57,14 @@ consumer reads slices.md again later.
 ## Remediation
 
 - `skills/decomposing-slices/SKILL.md` Step 8 — after writing `docs/slices.md`,
-  read `docs/select.md` (read-only). If select.md has an Active slice whose H3
-  demo line does not appear verbatim in the current Confirmed Slices, print a
+  read `docs/select.md` (read-only). If select.md's Active H3 (the Active
+  slice's identifier) no longer names any current Confirmed Slice, print a
   one-line nudge directing the user to `selecting-slice` Re-sync mode.
 - `skills/decomposing-slices/SKILL.md` "What this skill does NOT do" — clarified
   that the drift check reads select.md but never writes to it.
 - `skills/selecting-slice/SKILL.md` Step 1 — added a drift-detection bullet
-  that flags a *dangling Active* when its H3 demo line does not appear verbatim
-  in slices.md.
+  that flags a *dangling Active* when its H3 — the Active slice's identifier —
+  no longer names any current Confirmed Slice in slices.md.
 - `skills/selecting-slice/SKILL.md` Step 2 — added a fourth menu option,
   "Re-sync Active H3 from `docs/slices.md`", and a notice prepended when
   dangling Active is detected.

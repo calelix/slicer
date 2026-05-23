@@ -79,7 +79,7 @@ Quickly inspect:
 - Does `docs/slices.md` have at least one slice under `## Confirmed Slices`? If **no**, refuse: "There are no Confirmed Slices yet. Run the `decomposing-slices` skill to confirm at least one slice first." Stop.
 - Is there a `docs/select.md`? If **yes**, read it and check for an Active slice.
 - If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker) **and N > 0**, print a one-line count: "N unresolved Foundation Update Candidate(s) — consider running `defining-foundation` in update mode." Count only; no inference, no action. If `N = 0`, emit nothing.
-- **Dangling Active detection.** If `docs/select.md` has an Active slice whose H3 demo line does not appear verbatim in `docs/slices.md`'s `## Confirmed Slices`, print a one-line notice: "Active slice H3 in `docs/select.md` does not match any current Confirmed Slice — likely drift from a Decompose change. Step 2 will route to Re-sync or Close." Detection only; the user resolves it through Step 2.
+- **Dangling Active detection.** The Active slice's H3 header *is* its identifier in `docs/select.md` — it should name (verbatim) a current Confirmed Slice in `docs/slices.md`. If it no longer does — because Decompose has edited, split, merged, or deleted the slice it named — print a one-line notice: "Active in `docs/select.md` names a demo line that no longer exists as a Confirmed Slice in `docs/slices.md` — likely drift from a Decompose change. Step 2 will route to Re-sync or Close." Detection only; the user resolves it through Step 2.
 
 ### Step 2 — Mode branch
 
@@ -98,7 +98,7 @@ If `docs/select.md` has an Active slice, ask the user a single-select question (
 > ( ) Re-sync Active H3 from `docs/slices.md` — refresh the Active slice's H3 header against its current demo line in `docs/slices.md` (use when Decompose edited the slice line in place)
 > ( ) Close current Active — assign a status and move it to History
 
-If Step 1 flagged a *dangling Active*, prepend a one-line notice to the question above: "Heads up: the current Active slice's H3 does not match any current Confirmed Slice in `docs/slices.md` — pick **Re-sync** (if you can point at the current line) or **Close** (if the slice is truly gone)." This notice is informational; the user still chooses.
+If Step 1 flagged a *dangling Active*, prepend a one-line notice to the question above: "Heads up: the Active slice's H3 (its identifier in this file) no longer names any current Confirmed Slice in `docs/slices.md` — pick **Re-sync** (if you can point at the slice's current line) or **Close** (if the slice is truly gone)." This notice is informational; the user still chooses.
 
 **Label-only presentation.** Present the question with option labels exactly as written above. Do **not** elaborate per-option descriptions inline in your response; the labels are self-describing once the user has seen the menu. If the user asks about a specific option, expand only that one.
 
@@ -145,7 +145,7 @@ Move the closing slice to `## History` with the assigned status, prepending it t
 
 ### Step 4b — Re-sync Active H3 (from "Re-sync Active H3 from docs/slices.md")
 
-This step refreshes only the Active slice's H3 header so it again mirrors `docs/slices.md` verbatim. The closed demo line and Visible Outcomes are *not* touched — refining those is `Refine current Active's DoD` mode, not this one.
+This step refreshes only the Active slice's H3 — its identifier in `docs/select.md` — so it again names the slice's current demo line in `docs/slices.md`, verbatim. The closed demo line and Visible Outcomes are *not* touched — refining those is `Refine current Active's DoD` mode, not this one.
 
 Ask the user to name which current `## Confirmed Slice` in `docs/slices.md` the existing Active corresponds to now (by number or by quoting the current demo line). Use questions like (translate as needed):
 
@@ -302,7 +302,7 @@ Use `date +%Y-%m-%d` to obtain the date — never guess. Set `created` only on f
 
 Section rules:
 
-- **Active** — At most one slice. The H3 header carries the slice's demo line *exactly as it appears in `docs/slices.md`'s `## Confirmed Slices`* — do not paraphrase. Below the H3, three bold-label fields: `**Closed demo line**:`, `**Visible Outcomes**:` (1–3 bullets), `**Selected on**:` (date). When no slice is Active, omit the `### <demo line>` block but keep the `## Active` H2 header with a single line `(none)`.
+- **Active** — At most one slice. The H3 header *is* the Active slice's identifier in this file — it copies the slice's demo line *exactly as it appears in `docs/slices.md`'s `## Confirmed Slices`* (verbatim, never paraphrased) so this file unambiguously names which Confirmed Slice is currently Active. Below the H3, three bold-label fields: `**Closed demo line**:`, `**Visible Outcomes**:` (1–3 bullets), `**Selected on**:` (date). When no slice is Active, omit the `### <demo line>` block but keep the `## Active` H2 header with a single line `(none)`.
 - **History** — Reverse-chronological (most recent first). Each entry is one H3 with the closing date and the demo line, then four bold-label fields: `**Closed demo line**:`, `**Visible Outcomes**:`, `**Selected on**:` (the date the slice originally became Active), `**Status**:` (one of `completed`, `superseded`, `deferred`, `paused`). When History is empty, write `(none)` under the `## History` H2.
 - **Foundation Update Candidates** — Bullet list. Each entry is a candidate tech / scope decision discovered during a Select call that should probably be folded into `docs/foundation.md`. List date flagged. The actual Foundation update is the responsibility of `defining-foundation` in update mode — Select only flags. A candidate may also carry a `— resolved in foundation.md on <date>` marker appended by `defining-foundation` once that candidate has been folded in; preserve any such marker verbatim when rewriting this section. When no candidates exist, the section heading is kept and `(none)` is written as the only line; do not omit the heading.
 
