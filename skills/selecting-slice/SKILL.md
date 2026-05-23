@@ -77,6 +77,7 @@ Quickly inspect:
 - Does `docs/slices.md` have at least one slice under `## Confirmed Slices`? If **no**, refuse: "There are no Confirmed Slices yet. Run the `decomposing-slices` skill to confirm at least one slice first." Stop.
 - Is there a `docs/select.md`? If **yes**, read it and check for an Active slice.
 - If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker), print a one-line count: "N unresolved Foundation Update Candidate(s) — consider running `defining-foundation` in update mode." Count only; no inference, no action.
+- **Dangling Active detection.** If `docs/select.md` has an Active slice whose H3 demo line does not appear verbatim in `docs/slices.md`'s `## Confirmed Slices`, print a one-line notice: "Active slice H3 in `docs/select.md` does not match any current Confirmed Slice — likely drift from a Decompose change. Step 2 will route to Re-sync or Close." Detection only; the user resolves it through Step 2.
 
 ### Step 2 — Mode branch
 
@@ -92,12 +93,16 @@ If `docs/select.md` has an Active slice, ask the user a single-select question (
 >
 > ( ) Continue / Review only — show the Active slice and stop (you'll go back to working on it)
 > ( ) Refine current Active's DoD — change closed demo line or Visible Outcomes (but keep the same slice Active)
+> ( ) Re-sync Active H3 from `docs/slices.md` — refresh the Active slice's H3 header against its current demo line in `docs/slices.md` (use when Decompose edited the slice line in place)
 > ( ) Close current Active — assign a status and move it to History
+
+If Step 1 flagged a *dangling Active*, prepend a one-line notice to the question above: "Heads up: the current Active slice's H3 does not match any current Confirmed Slice in `docs/slices.md` — pick **Re-sync** (if you can point at the current line) or **Close** (if the slice is truly gone)." This notice is informational; the user still chooses.
 
 Branch on the user's choice:
 
 - **Continue / Review only** — Print the Active slice as it stands and terminate. Do not modify the file.
 - **Refine current Active's DoD** — Stay on the same Active slice. Go to Step 5 (skip slice-naming). Allow the user to overwrite either the closed demo line or any Visible Outcome (or both). On termination (Step 9), update the file's `updated:` frontmatter.
+- **Re-sync Active H3 from `docs/slices.md`** — Go to Step 4b (re-sync flow). Only the H3 line in `docs/select.md`'s Active section is overwritten; closed demo line and Visible Outcomes remain untouched.
 - **Close current Active** — Go to Step 4 (close-and-maybe-select).
 
 ### Step 3 — Slice naming — B2 default pattern
@@ -131,6 +136,22 @@ Move the closing slice to `## History` with the assigned status, prepending it t
 - **completed** — Ask: "Pick a new slice now, or stop here?" If "pick now", go to Step 3. If "stop", terminate (Step 9).
 - **superseded** — Go straight to Step 3 (the user already implied a new selection by choosing this status).
 - **deferred** or **paused** — Ask: "Pick a new slice now, or stop here?" If "pick now", go to Step 3. If "stop", terminate (Step 9). Defaulting to "stop" is fine here — the user may be ending a work session.
+
+### Step 4b — Re-sync Active H3 (from "Re-sync Active H3 from docs/slices.md")
+
+This step refreshes only the Active slice's H3 header so it again mirrors `docs/slices.md` verbatim. The closed demo line and Visible Outcomes are *not* touched — refining those is `Refine current Active's DoD` mode, not this one.
+
+Ask the user to name which current `## Confirmed Slice` in `docs/slices.md` the existing Active corresponds to now (by number or by quoting the current demo line). Use questions like (translate as needed):
+
+- "Which current Confirmed Slice in `docs/slices.md` is this Active slice now? You can quote its current demo line or use its current number."
+
+The agent does **not** infer the match by similarity to the old H3. The user names; the agent records.
+
+When the user names a slice, look it up in `docs/slices.md` and show: "I'll replace the Active slice's H3 with: `<new demo line>`. Closed demo line and Visible Outcomes stay as-is. OK?"
+
+If the user is uncertain ("I don't know which one") or says the slice no longer exists (because Decompose Deleted, Split, or Merged it away), this is not a re-sync case. Direct the user: "If the slice is truly gone, run this skill again and pick **Close current Active** instead — a Re-sync requires a matching Confirmed Slice in `docs/slices.md`." Terminate without modifying the file.
+
+On approval, overwrite the H3 header in `docs/select.md`'s `## Active` section with the new demo line. Do not modify any other field. Then proceed to Step 9 (Termination).
 
 ### Step 5 — Closed demo line — user-stated only
 
@@ -291,6 +312,7 @@ When `docs/select.md` exists at skill invocation:
 2. Branch on the mode question (Step 2):
   - Continue / Review only → output the Active slice and terminate (no file write).
   - Refine current Active's DoD → walk through Steps 5 and 6 only; keep the same Active slice header.
+  - Re-sync Active H3 from `docs/slices.md` → walk through Step 4b; only the H3 line is overwritten.
   - Close current Active → walk through Step 4; status is assigned, slice moves to History; possibly continue to Step 3 for a new selection.
 3. On termination (whenever the file is written), set `updated` in the frontmatter to today's date. Leave `created` unchanged.
 4. Confirm git commit with the user.
