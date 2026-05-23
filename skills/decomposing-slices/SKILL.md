@@ -63,11 +63,13 @@ A blank that is honestly blank is always better than a blank silently filled.
 
 ### Step 1 — Context check
 
+**Silent-on-clean.** Run the checks below but emit Step 1 output *only* when there is an actionable item: a missing prerequisite (refuse), an unresolved-FUC count `> 0`, or the update-mode state preview. If every check passes silently, skip directly to Step 2 without printing a status line.
+
 Quickly inspect:
 
 - Is there a `docs/foundation.md`? If **no**, refuse: "This skill needs a Foundation document at `docs/foundation.md`. Run the `defining-foundation` skill first." Do not generate a shorthand Foundation. Stop.
 - Is there a `docs/slices.md`? If **yes**, switch to **update mode** (see below). If **no**, this is a first call.
-- If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker), print a one-line count: "N unresolved Foundation Update Candidate(s) across slices.md/select.md — consider running `defining-foundation` in update mode." Count only; do not infer which candidates matter or act on them.
+- If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker) **and N > 0**, print a one-line count: "N unresolved Foundation Update Candidate(s) across slices.md/select.md — consider running `defining-foundation` in update mode." Count only; do not infer which candidates matter or act on them. If `N = 0`, emit nothing.
 - Read `docs/foundation.md`'s three sections, focusing on the End Goal (Section 1) and any constraints from Vision/Users (Section 2). You will use Foundation as the *starting point* for slice derivation, not copy its content into slices (slices are not Foundation's path).
 - **State preview (update mode only).** Before showing the Step 2 verb menu, print a single table summarizing the current slices.md state cross-referenced with `docs/select.md` if it exists. Skip this on first call (no slices.md yet). Format:
 
@@ -107,6 +109,8 @@ Read the existing file. Then ask the user which kind(s) of change this call is f
 > - [ ] Delete a slice
 > - [ ] Clarify a slice — promote a tentative slice to confirmed, or refine the wording of a confirmed slice
 > - [ ] Other / I'm not sure yet — let me describe it freely
+
+**Label-only presentation.** Present the question with option labels exactly as written above. Do **not** elaborate per-option descriptions inline in your response; the labels are self-describing once the user has seen the menu. If the user asks about a specific option, expand only that one.
 
 If the user picks "Other", let them describe in their own words and reflect back which of the six kinds (or combination) it most resembles. Confirm with the user before proceeding.
 
@@ -150,9 +154,9 @@ If the user can't restate, the slice does not get recorded. The user can use the
 For each newly written slice line, evaluate:
 
 - **Right size** — One line that names a *user-visible action* the user can demonstrate when the slice is done. Approve.
-- **Too big** — Hard to fit on one line; multiple actions bundled. Suggest splitting and ask the user to split it themselves (do not split it for them).
-- **Too small** — The line names an *internal step* ("create the database schema", "draw the login form") rather than a user-visible demo. Suggest absorbing it into a larger slice or merging with a sibling. Ask the user; do not merge for them.
-- **Contradicts Foundation** — The slice line conflicts with something stated in `docs/foundation.md` — most often the End Goal, a Core Value, or a stated constraint. Do not silently accept it, and do not rewrite it yourself. Name the conflict to the user — quote the Foundation text and the slice line — and ask the user to choose: drop or rework the slice, or run `defining-foundation` in update mode if the Foundation itself is now wrong. This is a consistency check against the one document Decompose already reads; it is not blank-filling by inference.
+- **Too big** — Hard to fit on one line; multiple actions bundled. Suggest splitting and ask the user to split it themselves (do not split it for them). Concrete next-call hint: "Re-run `/decomposing-slices` and pick **Split an existing slice**, naming this slice."
+- **Too small** — The line names an *internal step* ("create the database schema", "draw the login form") rather than a user-visible demo. Suggest absorbing it into a larger slice or merging with a sibling. Ask the user; do not merge for them. Concrete next-call hint: "Re-run `/decomposing-slices` and pick **Merge multiple slices**, naming this slice and its sibling."
+- **Contradicts Foundation** — The slice line conflicts with something stated in `docs/foundation.md` — most often the End Goal, a Core Value, or a stated constraint. Do not silently accept it, and do not rewrite it yourself. Name the conflict to the user — quote the Foundation text and the slice line — and ask the user to choose: drop or rework the slice, or run `/defining-foundation` in update mode if the Foundation itself is now wrong. This is a consistency check against the one document Decompose already reads; it is not blank-filling by inference.
 
 The user always makes the final call on size and on resolving any Foundation conflict.
 
@@ -181,7 +185,7 @@ When the conditions are met:
 1. Write or update `docs/slices.md` (see format below).
 2. **Drift check against `docs/select.md`.** If `docs/select.md` exists and has an Active slice whose H3 demo line does not appear verbatim in the current `## Confirmed Slices` of `docs/slices.md`, print a one-line nudge: "The Active slice's H3 in `docs/select.md` is now stale — run `selecting-slice` and pick 'Re-sync Active H3' mode to update it." Read-only check; do **not** write to `docs/select.md`. If `docs/select.md` does not exist, has no Active slice, or its Active H3 still matches a current Confirmed Slice, emit nothing.
 3. Confirm with the user whether to commit the file to git, then commit if confirmed (respect the user project's commit policy).
-4. Inform the user: "Decompose call complete. The next stage is Select for one of the confirmed slices. The skill ends here — what you do next is your choice."
+4. Inform the user: "Decompose call complete. The next stage is Select — run `/selecting-slice` and pick which Confirmed Slice to take on. The skill ends here — what you do next is your choice." If the Step 8 drift nudge fired in step 2, prepend: "Re-sync the Active H3 first (per the nudge above) before picking a new slice."
 
 Do not recommend any specific downstream tool.
 

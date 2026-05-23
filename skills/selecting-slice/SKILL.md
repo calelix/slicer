@@ -70,13 +70,15 @@ A blank that is honestly blank is always better than a blank silently filled.
 
 ### Step 1 — Context check
 
+**Silent-on-clean.** Run the checks below but emit Step 1 output *only* when there is an actionable item: a missing prerequisite (refuse), an unresolved-FUC count `> 0`, or a dangling Active. If every check passes silently, skip directly to Step 2 without printing a status line.
+
 Quickly inspect:
 
 - Is there a `docs/foundation.md`? If **no**, refuse: "This skill needs a Foundation document at `docs/foundation.md`. Run the `defining-foundation` skill first." Do not generate a shorthand Foundation. Stop.
 - Is there a `docs/slices.md`? If **no**, refuse: "This skill needs a Decompose document at `docs/slices.md`. Run the `decomposing-slices` skill first." Stop.
 - Does `docs/slices.md` have at least one slice under `## Confirmed Slices`? If **no**, refuse: "There are no Confirmed Slices yet. Run the `decomposing-slices` skill to confirm at least one slice first." Stop.
 - Is there a `docs/select.md`? If **yes**, read it and check for an Active slice.
-- If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker), print a one-line count: "N unresolved Foundation Update Candidate(s) — consider running `defining-foundation` in update mode." Count only; no inference, no action.
+- If `docs/slices.md` or `docs/select.md` has unresolved items under `## Foundation Update Candidates` (a candidate is unresolved if its bullet has no `resolved in foundation.md` marker) **and N > 0**, print a one-line count: "N unresolved Foundation Update Candidate(s) — consider running `defining-foundation` in update mode." Count only; no inference, no action. If `N = 0`, emit nothing.
 - **Dangling Active detection.** If `docs/select.md` has an Active slice whose H3 demo line does not appear verbatim in `docs/slices.md`'s `## Confirmed Slices`, print a one-line notice: "Active slice H3 in `docs/select.md` does not match any current Confirmed Slice — likely drift from a Decompose change. Step 2 will route to Re-sync or Close." Detection only; the user resolves it through Step 2.
 
 ### Step 2 — Mode branch
@@ -97,6 +99,8 @@ If `docs/select.md` has an Active slice, ask the user a single-select question (
 > ( ) Close current Active — assign a status and move it to History
 
 If Step 1 flagged a *dangling Active*, prepend a one-line notice to the question above: "Heads up: the current Active slice's H3 does not match any current Confirmed Slice in `docs/slices.md` — pick **Re-sync** (if you can point at the current line) or **Close** (if the slice is truly gone)." This notice is informational; the user still chooses.
+
+**Label-only presentation.** Present the question with option labels exactly as written above. Do **not** elaborate per-option descriptions inline in your response; the labels are self-describing once the user has seen the menu. If the user asks about a specific option, expand only that one.
 
 Branch on the user's choice:
 
@@ -130,6 +134,8 @@ Ask a single-select status question (translate to the user's language; record th
 > ( ) superseded — a higher-priority slice replaces it (you changed your mind)
 > ( ) deferred — push it off; not started yet
 > ( ) paused — started but stopped midway; intend to resume later
+
+**Label-only presentation.** Present the question with the four options as written. Do not add further per-option commentary in your response; the inline dash-explanations are sufficient.
 
 Move the closing slice to `## History` with the assigned status, prepending it to History (most-recent first). Then branch on the status:
 
@@ -166,7 +172,7 @@ When the user states a sentence, draft it as-is in the user's language for confi
 
 If the user cannot pin down a closed demo line:
 
-- Tell the user: "If we can't close the demo line in one sentence, the slice may be too vague. Consider re-running `decomposing-slices` to split or clarify it."
+- Tell the user: "If we can't close the demo line in one sentence, the slice may be too vague. Run `/decomposing-slices` and pick **Clarify a slice** (refine wording) or **Split an existing slice**, naming this slice."
 - Record the slot as `TBD: <reason>` if the user wants to proceed anyway, and continue to Step 6.
 
 There is **no B4 fallback** at this step. The closed demo line is the core destination — the agent does not propose candidates here.
@@ -186,9 +192,9 @@ Before finalizing each Visible Outcome, scan it for a *destination locator* — 
 
 After the user is finished:
 
-- **0 Outcomes** — The slice may be too vague. Tell the user: "We don't have any Visible Outcome yet. The slice may be too vague — consider re-running `decomposing-slices` to clarify or split it." Record the slot as `TBD: <reason>` if the user insists on proceeding.
+- **0 Outcomes** — The slice may be too vague. Tell the user: "We don't have any Visible Outcome yet. The slice may be too vague — run `/decomposing-slices` and pick **Clarify a slice** (refine wording) or **Split an existing slice**, naming this slice." Record the slot as `TBD: <reason>` if the user insists on proceeding.
 - **1–3 Outcomes** — OK, proceed.
-- **4 or more Outcomes attempted** — The slice is too big. Tell the user: "This slice has 4+ Visible Outcomes. That usually means it should be split. Consider re-running `decomposing-slices` to split it." Do not record more than 3 Outcomes; ask the user to either drop down to ≤3 or halt this Select call to go split the slice. Do **not** silently truncate.
+- **4 or more Outcomes attempted** — The slice is too big. Tell the user: "This slice has 4+ Visible Outcomes. That usually means it should be split. Run `/decomposing-slices` and pick **Split an existing slice**, naming this slice." Do not record more than 3 Outcomes; ask the user to either drop down to ≤3 or halt this Select call to go split the slice. Do **not** silently truncate.
 
 There is **no B4 fallback** at this step.
 

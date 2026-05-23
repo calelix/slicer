@@ -66,6 +66,8 @@ Quickly inspect:
 
 If `docs/foundation.md` exists, switch to **update mode** (see below).
 
+**Silent-on-clean.** Run these checks but emit Step 1 output only when there is an actionable item to surface (e.g., update mode triggered with unresolved Foundation Update Candidates from `docs/slices.md` or `docs/select.md`). If all checks pass quietly, proceed straight to Step 2 without printing a status line.
+
 ### Step 2 — Walk the three sections in order
 
 The Foundation Document has three sections, in this fixed order:
